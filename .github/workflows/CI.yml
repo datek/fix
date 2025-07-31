@@ -1,0 +1,29 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  CI:
+    strategy:
+      matrix:
+        go-version: [ "1.24.0" ]
+      fail-fast: true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-go@v5
+      with:
+        go-version: ${{ matrix.go-version }}
+    - uses: extractions/setup-just@v1
+
+    - name: Test
+      run: |
+        just test-cover
+
+    - name: Upload coverage
+      uses: coverallsapp/github-action@v2
+      if: ${{ contains(matrix.go-version, '1.24.0') }}
