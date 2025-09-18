@@ -6,6 +6,8 @@ import (
 	"unsafe"
 )
 
+var ctxOffset int
+
 type Fixture[V any] interface {
 	Value(t *testing.T) V
 }
@@ -26,7 +28,7 @@ func (f *fixture[V]) Value(t *testing.T) V {
 	value := f.createValue(t)
 
 	// Look away
-	ctx := (*context.Context)(unsafe.Add(unsafe.Pointer(t), 400))
+	ctx := (*context.Context)(unsafe.Add(unsafe.Pointer(t), ctxOffset))
 	*ctx = context.WithValue(t.Context(), f, value)
 
 	return value
