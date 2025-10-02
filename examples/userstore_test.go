@@ -11,29 +11,29 @@ func TestUserStore(t *testing.T) {
 	t.Run("Creates user", func(t *testing.T) {
 		// given
 		name := "John"
-		store := fixtureUserStore.Value(t)
+		store := fixtureUserStore(t)
 
 		// when
 		err := store.CreateUser(name)
 
 		// then
 		equal(t, nil, err)
-		statements := *fixtureStatements.Value(t)
+		statements := *fixtureStatements(t)
 		equal(t, 1, len(statements))
 		equal(t, "INSERT "+name, statements[0])
 	})
 
 	t.Run("Deletes user", func(t *testing.T) {
 		// given
-		name := fixtureExistingUser.Value(t)
-		store := fixtureUserStore.Value(t)
+		name := fixtureExistingUser(t)
+		store := fixtureUserStore(t)
 
 		// when
 		err := store.DeleteUser(name)
 
 		// then
 		equal(t, nil, err)
-		statements := *fixtureStatements.Value(t)
+		statements := *fixtureStatements(t)
 		equal(t, 1, len(statements))
 		equal(t, "DELETE "+name, statements[0])
 	})
@@ -41,7 +41,7 @@ func TestUserStore(t *testing.T) {
 
 var fixtureExistingUser = fix.New(func(t *testing.T) string {
 	t.Helper()
-	userStore := fixtureUserStore.Value(t)
+	userStore := fixtureUserStore(t)
 
 	username := "Doe"
 	err := userStore.CreateUser(username)
@@ -51,7 +51,7 @@ var fixtureExistingUser = fix.New(func(t *testing.T) string {
 		return ""
 	}
 
-	statements := fixtureStatements.Value(t)
+	statements := fixtureStatements(t)
 	*statements = []string{}
 
 	return username
@@ -59,14 +59,14 @@ var fixtureExistingUser = fix.New(func(t *testing.T) string {
 
 var fixtureUserStore = fix.New(func(t *testing.T) examples.UserStore {
 	t.Helper()
-	db := fixtureMockDB.Value(t)
+	db := fixtureMockDB(t)
 
 	return examples.NewUserStore(db)
 })
 
 var fixtureMockDB = fix.New(func(t *testing.T) examples.DB {
 	t.Helper()
-	statements := fixtureStatements.Value(t)
+	statements := fixtureStatements(t)
 
 	return examples.NewMockDB(func(statement string) error {
 		*statements = append(*statements, statement)
