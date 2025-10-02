@@ -8,19 +8,21 @@ import (
 
 var ctxOffset int
 
-type Fixture[V any] interface {
-	Value(t *testing.T) V
-}
+type Fixture[V any] func(t *testing.T) V
 
 func New[V any](createValue func(t *testing.T) V) Fixture[V] {
-	return &fixture[V]{createValue}
+	f := &fixture[V]{createValue}
+
+	return func(t *testing.T) V {
+		return f.value(t)
+	}
 }
 
 type fixture[V any] struct {
 	createValue func(t *testing.T) V
 }
 
-func (f *fixture[V]) Value(t *testing.T) V {
+func (f *fixture[V]) value(t *testing.T) V {
 	if value, ok := t.Context().Value(f).(V); ok {
 		return value
 	}

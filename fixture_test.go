@@ -14,7 +14,7 @@ func TestFixture(topT *testing.T) {
 		})
 
 		// when
-		result := fixture.Value(t)
+		result := fixture(t)
 
 		// then
 		equal(t, "haha", result)
@@ -29,8 +29,8 @@ func TestFixture(topT *testing.T) {
 		})
 
 		// when
-		fixture.Value(t)
-		fixture.Value(t)
+		fixture(t)
+		fixture(t)
 
 		// then
 		equal(t, 1, fixtureCreationCount)
@@ -43,11 +43,11 @@ func TestFixture(topT *testing.T) {
 		})
 
 		fixture2 := fix.New(func(t *testing.T) int {
-			return fixture1.Value(t) + 2
+			return fixture1(t) + 2
 		})
 
 		// when
-		result := fixture2.Value(t)
+		result := fixture2(t)
 
 		// then
 		equal(t, 3, result)
@@ -62,15 +62,15 @@ func TestFixture(topT *testing.T) {
 	topT.Run("Mixed scope fixtures are working", func(t *testing.T) {
 		// given
 		fixture1 := fix.New(func(t *testing.T) string {
-			return topLevelFixture.Value(topT) + " this works too "
+			return topLevelFixture(topT) + " this works too "
 		})
 
 		fixture2 := fix.New(func(t *testing.T) string {
-			return fixture1.Value(t) + topLevelFixture.Value(topT)
+			return fixture1(t) + topLevelFixture(topT)
 		})
 
 		// when
-		result := fixture2.Value(t)
+		result := fixture2(t)
 
 		// then
 		equal(t, "!yay! this works too !yay!", result)
@@ -84,7 +84,7 @@ func TestFixture(topT *testing.T) {
 			return nil
 		})
 
-		fixture.Value(t)
+		fixture(t)
 		equal(t, 0, counter)
 	})
 
