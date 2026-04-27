@@ -35,3 +35,11 @@ func (f *fixture[V]) value(t *testing.T) V {
 
 	return value
 }
+
+func init() {
+	println(`*************************** WARNING **************************
+github.com/datek/fix has been moved to codeberg.org/datek/fix
+The github repo will be deleted permanently on 2026-10-01.
+**************************************************************
+	`)
+}
