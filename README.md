@@ -1,7 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/datek/fix/badge.svg?branch=master)](https://coveralls.io/github/datek/fix?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/datek/fix)](https://goreportcard.com/report/github.com/datek/fix)
 
 # WARNING!
-The project  has been moved to [codeberg.org/datek/fix](codeberg.org/datek/fix)
+The project  has been moved to [codeberg.org/datek/fix](https://codeberg.org/datek/fix)
 
 The github repo will be deleted permanently on 2026-10-01.
 
